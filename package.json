@@ -1,0 +1,45 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "posts",
+    "comments",
+    "event-bus",
+    "moderation"
+  ],
+  "scripts": {
+    "lint": "eslint \"client/src/**/*.{js,jsx,ts,tsx}\" \"posts/src/**/*.ts\" \"comments/src/**/*.ts\"",
+    "lint:fix": "npm run lint -- --fix",
+    "fix:cache": "npm run lint -- --fix --cache",
+    "build:posts": "tsc -p posts/tsconfig.json",
+    "build:comments": "tsc -p comments/tsconfig.json",
+    "prepare": "husky install",
+    "type-check": "npm run type-check:posts && npm run type-check:comments && npm run type-check:client",
+    "type-check:posts": "tsc -p posts/tsconfig.json --noEmit",
+    "type-check:comments": "tsc -p comments/tsconfig.json --noEmit",
+    "type-check:client": "tsc -p client/tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "18.4.3",
+    "@commitlint/config-conventional": "18.4.3",
+    "@commitlint/cz-commitlint": "18.4.3",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "commitizen": "^4.3.1",
+    "eslint": "8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-prettier": "^5.1.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "husky": "^9.1.7",
+    "typescript": "4.9.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  }
+}

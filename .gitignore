@@ -1,0 +1,60 @@
+# === Node ===
+node_modules/
+**/node_modules/
+
+# === Environment files ===
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# === Logs ===
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# === OS artifacts ===
+.DS_Store
+Thumbs.db
+
+# === TypeScript build outputs ===
+dist/
+**/dist/
+
+# === Vite build output ===
+client/dist/
+client/.vite/
+
+# === Coverage ===
+coverage/
+**/coverage/
+
+# === Cache directories ===
+.cache/
+.vscode/
+.idea/
+.tmp/
+temp/
+tmp/
+
+# === Build artifacts ===
+*.tsbuildinfo
+
+# === Local config ===
+*.local
+*.cache
+*.swp
+*.swo
+
+# === Editor directories ===
+.vscode/
+.idea/
+
+# === ESLint cache ===
+.eslintcache
+
+# === Mac-specific ===
+*.DS_Store
