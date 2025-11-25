@@ -2,7 +2,8 @@ import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import type { Post } from '../../types';
+import type { Post } from '@types';
+
 import CommentCreate from '../CommentCreate/CommentCreate';
 import CommentList from '../CommentList/CommentList';
 

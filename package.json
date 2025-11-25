@@ -7,17 +7,19 @@
     "posts",
     "comments",
     "event-bus",
-    "moderation"
+    "moderation",
+    "query"
   ],
   "scripts": {
-    "lint": "eslint \"client/src/**/*.{js,jsx,ts,tsx}\" \"posts/src/**/*.ts\" \"comments/src/**/*.ts\"",
+    "lint": "eslint \"client/src/**/*.{js,jsx,ts,tsx}\" \"posts/src/**/*.ts\" \"comments/src/**/*.ts\" \"query/src/**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
     "fix:cache": "npm run lint -- --fix --cache",
     "build:posts": "tsc -p posts/tsconfig.json",
     "build:comments": "tsc -p comments/tsconfig.json",
     "prepare": "husky install",
-    "type-check": "npm run type-check:posts && npm run type-check:comments && npm run type-check:client",
+    "type-check": "npm run type-check:posts && npm run type-check:comments && npm run type-check:query && npm run type-check:client",
     "type-check:posts": "tsc -p posts/tsconfig.json --noEmit",
+    "type-check:query": "tsc -p query/tsconfig.json --noEmit",
     "type-check:comments": "tsc -p comments/tsconfig.json --noEmit",
     "type-check:client": "tsc -p client/tsconfig.json --noEmit"
   },

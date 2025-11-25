@@ -1,8 +1,3 @@
-export interface Comment {
-  id: string;
-  content: string;
-}
-
 export interface GetCommentsParams {
   id: string;
 }

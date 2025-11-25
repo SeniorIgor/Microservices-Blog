@@ -15,7 +15,7 @@ app.post('/events', async (req: Request<object, object, EventItem>, res: Respons
   const targets = [
     process.env.POSTS_SERVICE_URL ?? 'http://localhost:4000/events',
     process.env.COMMENTS_SERVICE_URL ?? 'http://localhost:4001/events',
-    // process.env.QUERY_SERVICE_URL ?? 'http://localhost:4002/events',
+    process.env.QUERY_SERVICE_URL ?? 'http://localhost:4002/events',
   ];
 
   await Promise.all(

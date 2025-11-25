@@ -4,9 +4,9 @@ import { randomBytes } from 'crypto';
 import type { Request, Response } from 'express';
 import express from 'express';
 
-import type { EventItem } from '@types';
+import type { Comment, EventItem } from '@types';
 
-import type { Comment, CreateCommentsParams, CreateCommentsRequest, GetCommentsParams } from './types';
+import type { CreateCommentsParams, CreateCommentsRequest, GetCommentsParams } from './types';
 
 const app = express();
 app.use(express.json());

@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import type { Comment } from '../../types';
+import type { Comment } from '@types';
 
 interface CommentListProps {
   postId: string;
