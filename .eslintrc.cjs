@@ -9,19 +9,52 @@ module.exports = {
   env: {
     es2022: true,
   },
-  plugins: ["@typescript-eslint", "import", "prettier"],
+  plugins: ["import", "@typescript-eslint", "prettier", "simple-import-sort"],
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:import/recommended",
-    "plugin:import/typescript",
+    "prettier",
     "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
   ],
   rules: {
     "prettier/prettier": "warn",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    "max-len": ["warn", { code: 120, ignoreUrls: true }]
+    "max-len": ["warn", { code: 120, ignoreUrls: true }],
+    "@typescript-eslint/consistent-type-imports": [
+    "error",
+      {
+        prefer: "type-imports",
+        fixStyle: "separate-type-imports",
+        disallowTypeAnnotations: false,
+      },
+    ],
+    "simple-import-sort/exports": "error",
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: [
+          // Packages. `react` related packages come first.
+          ['^react', '^\\w', '^@[^//]'],
+          // Public
+          ['^@public\\/'],
+          // 'Separate import for global styles @/styles/base.scss'
+          ['@/styles/base.scss$'],
+          // common types
+          ['^@types'],
+          // Parent imports. Put `..` last.
+          ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+          // Other relative imports. Put same-folder imports and `.` last.
+          ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$', '^\\./?.types$'],
+          // Style imports (for named imports and for global styles a separate regexp).
+          ['[A-Za-z@\\.].+\\.s?css$', '^[A-Za-z@\\.].+\\.s?css$'],
+        ],
+      },
+    ],
   },
 
   overrides: [

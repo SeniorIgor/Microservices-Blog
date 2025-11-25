@@ -1,13 +1,15 @@
-import { useState, FormEvent, FC } from "react";
-import axios from "axios";
-import type { CreateCommentRequest } from "../../types";
+import type { FC, FormEvent } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
+
+import type { CreateCommentRequest } from '../../types';
 
 interface CommentCreateProps {
   postId: string;
 }
 
 const CommentCreate: FC<CommentCreateProps> = ({ postId }) => {
-  const [content, setContent] = useState<string>("");
+  const [content, setContent] = useState<string>('');
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -16,7 +18,7 @@ const CommentCreate: FC<CommentCreateProps> = ({ postId }) => {
 
     await axios.post(`http://localhost:4001/posts/${postId}/comments`, payload);
 
-    setContent("");
+    setContent('');
   };
 
   return (
@@ -24,11 +26,7 @@ const CommentCreate: FC<CommentCreateProps> = ({ postId }) => {
       <form onSubmit={onSubmit}>
         <div className="form-group">
           <label>New Comment</label>
-          <input
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="form-control"
-          />
+          <input value={content} onChange={(e) => setContent(e.target.value)} className="form-control" />
         </div>
         <button className="btn btn-primary">Submit</button>
       </form>

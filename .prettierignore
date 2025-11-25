@@ -1,0 +1,4 @@
+build/**
+.husky/**
+node_modules/**
+package.json

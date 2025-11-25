@@ -1,7 +1,7 @@
-import { FC } from "react";
+import type { FC } from 'react';
 
-import PostCreate from "./components/PostCreate/PostCreate";
-import PostList from "./components/PostList/PostList";
+import PostCreate from './components/PostCreate/PostCreate';
+import PostList from './components/PostList/PostList';
 
 const App: FC = () => {
   return (

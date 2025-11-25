@@ -1,14 +1,39 @@
-// import express, { Request, Response } from "express";
+import axios from "axios";
+import express, { Request, Response } from "express";
 
-// const app = express();
-// app.use(express.json());
+import type { EventItem } from "@types";
 
-// const PORT = process.env.POSTS_PORT || 4000;
+const app = express();
+app.use(express.json());
 
-// app.get("/posts", (_req: Request, res: Response) => {
-//   res.json([{ id: 1, title: "First post" }]);
-// });
+const PORT = process.env.EVENT_BUS_PORT || 4005;
 
-// app.listen(PORT, () => {
-//   console.log(`Posts service listening on port ${PORT}`);
-// });
+app.post(
+  "/events",
+  async (req: Request<object, object, EventItem>, res: Response) => {
+    const event = req.body;
+
+    const targets = [
+      "http://localhost:4000/events",
+      "http://localhost:4001/events",
+      "http://localhost:4002/events",
+    ];
+
+    await Promise.all(
+      targets.map((url) =>
+        axios.post(url, event).catch((err) => {
+          console.error(
+            `Error sending event ${event.type} to ${url}:`,
+            err.message,
+          );
+        }),
+      ),
+    );
+
+    res.send({ status: "OK" });
+  },
+);
+
+app.listen(PORT, () => {
+  console.log(`Event-Bus service listening on port ${PORT}`);
+});
