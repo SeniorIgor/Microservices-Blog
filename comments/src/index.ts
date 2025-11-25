@@ -52,6 +52,12 @@ app.post(
   },
 );
 
+app.post('/events', (req: Request<object, object, EventItem>, res: Response) => {
+  console.log('Comments Service Received Event', req.body.type);
+
+  res.send({});
+});
+
 app.listen(PORT, () => {
   console.log(`Comments service listening on port ${PORT}`);
 });
