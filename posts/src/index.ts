@@ -13,13 +13,14 @@ app.use(express.json());
 app.use(cors());
 
 const PORT = process.env.POSTS_PORT || 4000;
+const EVENT_BUS_URL = process.env.EVENT_BUS_URL ?? 'http://localhost:4005';
 const posts: Record<string, Post> = {};
 
 app.get('/posts', (_req: Request, res: Response) => {
   res.send(posts);
 });
 
-app.post('/posts', (req: Request<object, object, CreatePostRequest>, res: Response) => {
+app.post('/posts', async (req: Request<object, object, CreatePostRequest>, res: Response) => {
   const { title } = req.body;
 
   if (!title) {
@@ -35,7 +36,13 @@ app.post('/posts', (req: Request<object, object, CreatePostRequest>, res: Respon
     data: { id, title },
   };
 
-  axios.post('http://localhost:4005/events', event);
+  try {
+    await axios.post(`${EVENT_BUS_URL}/events`, event);
+  } catch (error) {
+    console.error('Failed to emit PostCreated event', error);
+
+    return res.status(500).json({ error: 'Failed to emit event' });
+  }
 
   res.status(201).send(posts[id]);
 });
