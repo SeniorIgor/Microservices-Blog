@@ -1,3 +1,5 @@
+export type RefreshPosts = () => Promise<void>;
+
 export interface CreatePostRequest {
   title: string;
 }

@@ -2,9 +2,13 @@ import type { FC, FormEvent } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 
-import type { CreatePostRequest } from '../../types';
+import type { CreatePostRequest, RefreshPosts } from '../../types';
 
-const PostCreate: FC = () => {
+interface PostCreateProps {
+  refreshPosts: RefreshPosts;
+}
+
+const PostCreate: FC<PostCreateProps> = ({ refreshPosts }) => {
   const [title, setTitle] = useState<string>('');
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -13,6 +17,8 @@ const PostCreate: FC = () => {
     const payload: CreatePostRequest = { title };
 
     await axios.post('http://localhost:4000/posts', payload);
+
+    await refreshPosts();
 
     setTitle('');
   };

@@ -2,13 +2,14 @@ import type { FC, FormEvent } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 
-import type { CreateCommentRequest } from '../../types';
+import type { CreateCommentRequest, RefreshPosts } from '../../types';
 
 interface CommentCreateProps {
   postId: string;
+  refreshPosts: RefreshPosts;
 }
 
-const CommentCreate: FC<CommentCreateProps> = ({ postId }) => {
+const CommentCreate: FC<CommentCreateProps> = ({ postId, refreshPosts }) => {
   const [content, setContent] = useState<string>('');
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -17,6 +18,8 @@ const CommentCreate: FC<CommentCreateProps> = ({ postId }) => {
     const payload: CreateCommentRequest = { content };
 
     await axios.post(`http://localhost:4001/posts/${postId}/comments`, payload);
+
+    await refreshPosts();
 
     setContent('');
   };

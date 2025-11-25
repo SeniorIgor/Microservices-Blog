@@ -2,16 +2,14 @@ import cors from 'cors';
 import type { Request, Response } from 'express';
 import express from 'express';
 
-import type { EventItem } from '@types';
-
-import type { PostsWithComments } from './types';
+import type { EventItem, PostsWithCommentsMap } from '@types';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 const PORT = process.env.QUERY_POST || 4002;
-const posts: Record<string, PostsWithComments> = {};
+const posts: PostsWithCommentsMap = {};
 
 app.get('/posts', (_req: Request, res: Response) => {
   res.json(posts);
