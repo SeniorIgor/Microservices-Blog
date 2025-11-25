@@ -4,10 +4,10 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 2022,
-    sourceType: "module"
+    sourceType: "module",
   },
   env: {
-    es2022: true
+    es2022: true,
   },
   plugins: ["@typescript-eslint", "import", "prettier"],
   extends: [
@@ -15,15 +15,13 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
   ],
   rules: {
     "prettier/prettier": "warn",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      { "argsIgnorePattern": "^_" }
-    ]
+    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    "max-len": ["warn", { code: 120, ignoreUrls: true }]
   },
 
   overrides: [
@@ -32,7 +30,7 @@ module.exports = {
       files: ["client/src/**/*.{ts,tsx,js,jsx}"],
       env: {
         browser: true,
-        node: false
+        node: false,
       },
       plugins: ["react", "react-hooks"],
       extends: [
@@ -41,16 +39,16 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:import/recommended",
         "plugin:import/typescript",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
       ],
       settings: {
         react: {
-          version: "detect"
-        }
+          version: "detect",
+        },
       },
       rules: {
-        "react/react-in-jsx-scope": "off"
-      }
+        "react/react-in-jsx-scope": "off",
+      },
     },
 
     // Node backends
@@ -58,8 +56,8 @@ module.exports = {
       files: ["posts/src/**/*.ts", "comments/src/**/*.ts"],
       env: {
         node: true,
-        browser: false
-      }
-    }
-  ]
+        browser: false,
+      },
+    },
+  ],
 };

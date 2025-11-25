@@ -1,13 +1,49 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
+import { randomBytes } from "crypto";
+
+import {
+  Comment,
+  CreateCommentsParams,
+  CreateCommentsRequest,
+  GetCommentsParams,
+} from "./types";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
-const PORT = process.env.COMMENTS_PORT || 4001;
+const PORT = process.env.POSTS_PORT || 4001;
+const commentByPostId: Record<string, Array<Comment>> = {};
 
-app.get("/comments", (_req: Request, res: Response) => {
-  res.json([{ id: 1, postId: 1, text: "Nice post!" }]);
-});
+app.get(
+  "/posts/:id/comments",
+  (req: Request<GetCommentsParams>, res: Response) => {
+    const { id: postId } = req.params;
+
+    res.send(commentByPostId[postId] || []);
+  },
+);
+
+app.post(
+  "/posts/:id/comments",
+  (
+    req: Request<CreateCommentsParams, object, CreateCommentsRequest>,
+    res: Response,
+  ) => {
+    const commentId = randomBytes(4).toString("hex");
+    const { content } = req.body;
+    const { id: postId } = req.params;
+
+    const comments = commentByPostId[postId] || [];
+
+    comments.push({ id: commentId, content });
+
+    commentByPostId[postId] = comments;
+
+    res.status(201).send(comments);
+  },
+);
 
 app.listen(PORT, () => {
   console.log(`Comments service listening on port ${PORT}`);

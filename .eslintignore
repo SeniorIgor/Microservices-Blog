@@ -3,3 +3,4 @@ node_modules
 client/dist
 client/.vite
 commitlint.config.cjs
+.eslintrc.cjs
