@@ -42,7 +42,7 @@ module.exports = {
           // Packages. `react` related packages come first.
           ['^react', '^\\w', '^@[^//]'],
           // Public
-          ['^shared\\/'],
+          ['^@org\\/'],
           // 'Separate import for global styles @/styles/base.scss'
           ['@/styles/base.scss$'],
           // common types

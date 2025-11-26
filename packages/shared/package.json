@@ -1,0 +1,13 @@
+{
+  "name": "@org/shared",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -w -p tsconfig.json",
+    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
+    "type-check": "tsc -p tsconfig.json --noEmit"
+  }
+}

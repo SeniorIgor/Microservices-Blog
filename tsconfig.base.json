@@ -9,9 +9,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "noImplicitAny": true,
-    "baseUrl": ".",
-    "paths": {
-      "shared/*": ["shared/src/*"]
-    },
+    "baseUrl": "."
   }
 }

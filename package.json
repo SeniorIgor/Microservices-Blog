@@ -1,5 +1,5 @@
 {
-  "name": "blog",
+  "name": "@org/blog",
   "version": "1.0.0",
   "private": true,
   "engines": {
@@ -7,28 +7,15 @@
     "npm": "11.6.2"
   },
   "workspaces": [
-    "client",
-    "posts",
-    "comments",
-    "event-bus",
-    "moderation",
-    "query",
-    "shared"
+    "packages/*"
   ],
   "scripts": {
-    "lint": "eslint \"client/src/**/*.{js,jsx,ts,tsx}\" \"posts/src/**/*.ts\" \"comments/src/**/*.ts\" \"query/src/**/*.ts\" \"moderation/src/**/*.ts\" \"shared/src/**/*.ts\"",
-    "lint:fix": "npm run lint -- --fix",
-    "fix:cache": "npm run lint -- --fix --cache",
-    "build:posts": "tsc -p posts/tsconfig.json",
-    "build:comments": "tsc -p comments/tsconfig.json",
-    "prepare": "husky install",
-    "type-check": "npm run type-check:posts && npm run type-check:comments && npm run type-check:query && npm run type-check:client && npm run type-check:moderation && npm run type-check:shared",
-    "type-check:posts": "tsc -p posts/tsconfig.json --noEmit",
-    "type-check:query": "tsc -p query/tsconfig.json --noEmit",
-    "type-check:comments": "tsc -p comments/tsconfig.json --noEmit",
-    "type-check:moderation": "tsc -p moderation/tsconfig.json --noEmit",
-    "type-check:shared": "tsc -p shared/tsconfig.json --noEmit",
-    "type-check:client": "tsc -p client/tsconfig.json --noEmit"
+    "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint --workspaces -- --fix",
+    "fix:cache": "npm run lint --workspaces -- --fix --cache",
+    "type-check": "npm run type-check --workspaces",
+    "build": "npm run build --workspaces",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
