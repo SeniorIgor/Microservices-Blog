@@ -15,6 +15,7 @@ app.post('/events', async (req: Request<object, object, EventItem>, res: Respons
     SERVICE_URLS.posts.events.POST(),
     SERVICE_URLS.comments.events.POST(),
     SERVICE_URLS.query.events.POST(),
+    SERVICE_URLS.moderation.events.POST(),
   ];
 
   await Promise.all(

@@ -1,22 +1,23 @@
 import type { Comment } from './comments';
+import type { Post } from './posts';
 
-interface CommentCreatedData extends Comment {
+interface CommentData extends Comment {
   postId: string;
 }
 
 interface CommentCreated {
   type: 'CommentCreated';
-  data: CommentCreatedData;
-}
-
-interface PostCreatedData {
-  id: string;
-  title: string;
+  data: CommentData;
 }
 
 interface PostCreated {
   type: 'PostCreated';
-  data: PostCreatedData;
+  data: Post;
 }
 
-export type EventItem = CommentCreated | PostCreated;
+interface CommentModerated {
+  type: 'CommentModerated';
+  data: CommentData;
+}
+
+export type EventItem = CommentCreated | PostCreated | CommentModerated;
