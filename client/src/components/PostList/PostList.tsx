@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { RefreshPosts } from 'client/src/types';
 
-import type { PostsWithCommentsMap } from '@types';
+import type { PostsWithCommentsMap } from 'shared/types';
 
 import CommentCreate from '../CommentCreate/CommentCreate';
 import CommentList from '../CommentList/CommentList';

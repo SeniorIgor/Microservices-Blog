@@ -1,5 +1,5 @@
 export interface GetCommentsParams {
-  id: string;
+  postId: string;
 }
 
 export interface CreateCommentsRequest {
@@ -7,5 +7,5 @@ export interface CreateCommentsRequest {
 }
 
 export interface CreateCommentsParams {
-  id: string;
+  postId: string;
 }

@@ -12,24 +12,28 @@
     "comments",
     "event-bus",
     "moderation",
-    "query"
+    "query",
+    "shared"
   ],
   "scripts": {
-    "lint": "eslint \"client/src/**/*.{js,jsx,ts,tsx}\" \"posts/src/**/*.ts\" \"comments/src/**/*.ts\" \"query/src/**/*.ts\"",
+    "lint": "eslint \"client/src/**/*.{js,jsx,ts,tsx}\" \"posts/src/**/*.ts\" \"comments/src/**/*.ts\" \"query/src/**/*.ts\" \"moderation/src/**/*.ts\" \"shared/src/**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
     "fix:cache": "npm run lint -- --fix --cache",
     "build:posts": "tsc -p posts/tsconfig.json",
     "build:comments": "tsc -p comments/tsconfig.json",
     "prepare": "husky install",
-    "type-check": "npm run type-check:posts && npm run type-check:comments && npm run type-check:query && npm run type-check:client",
+    "type-check": "npm run type-check:posts && npm run type-check:comments && npm run type-check:query && npm run type-check:client && npm run type-check:moderation && npm run type-check:shared",
     "type-check:posts": "tsc -p posts/tsconfig.json --noEmit",
     "type-check:query": "tsc -p query/tsconfig.json --noEmit",
     "type-check:comments": "tsc -p comments/tsconfig.json --noEmit",
+    "type-check:moderation": "tsc -p moderation/tsconfig.json --noEmit",
+    "type-check:shared": "tsc -p shared/tsconfig.json --noEmit",
     "type-check:client": "tsc -p client/tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
+    "@types/node": "^24.10.1",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "8.57.0",

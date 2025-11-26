@@ -22,7 +22,8 @@ module.exports = {
   ],
   rules: {
     "prettier/prettier": "warn",
-    "no-unused-vars": "off",
+    "import/no-named-as-default-member": "off",
+    "no-unused-vars": "error",
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     "max-len": ["warn", { code: 120, ignoreUrls: true }],
     "@typescript-eslint/consistent-type-imports": [
@@ -41,7 +42,7 @@ module.exports = {
           // Packages. `react` related packages come first.
           ['^react', '^\\w', '^@[^//]'],
           // Public
-          ['^@public\\/'],
+          ['^shared\\/'],
           // 'Separate import for global styles @/styles/base.scss'
           ['@/styles/base.scss$'],
           // common types
@@ -55,6 +56,29 @@ module.exports = {
         ],
       },
     ],
+  },
+
+  settings: {
+    "import/resolver": {
+      // So import/no-unresolved works with TS files
+      typescript: {
+        // point to your TS configs used for resolution
+        project: [
+          "./tsconfig.base.json",
+          "./client/tsconfig.json",
+          "./posts/tsconfig.json",
+          "./comments/tsconfig.json",
+          "./query/tsconfig.json",
+          "./moderation/tsconfig.json",
+          "./shared/tsconfig.json"
+        ],
+        noWarnOnMultipleProjects: true,
+      },
+      // optional, but nice to keep node-style resolution too
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
   },
 
   overrides: [

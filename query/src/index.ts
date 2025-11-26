@@ -2,13 +2,13 @@ import cors from 'cors';
 import type { Request, Response } from 'express';
 import express from 'express';
 
-import type { EventItem, PostsWithCommentsMap } from '@types';
+import { SERVICE_PORTS } from 'shared/constants';
+import type { EventItem, PostsWithCommentsMap } from 'shared/types';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-const PORT = process.env.QUERY_POST || 4002;
 const posts: PostsWithCommentsMap = {};
 
 app.get('/posts', (_req: Request, res: Response) => {
@@ -25,19 +25,17 @@ app.post('/events', (req: Request<unknown, unknown, EventItem>, res: Response) =
   }
 
   if (type === 'CommentCreated') {
-    const { id, content, postId } = data;
+    const { postId, ...comment } = data;
     const post = posts[postId];
 
     if (post) {
-      post.comments.push({ id, content });
+      post.comments.push(comment);
     }
   }
-
-  console.log(posts);
 
   res.send({});
 });
 
-app.listen(PORT, () => {
-  console.log(`Query service listening on port ${PORT}`);
+app.listen(SERVICE_PORTS.query, () => {
+  console.log(`Query service listening on port ${SERVICE_PORTS.query}`);
 });

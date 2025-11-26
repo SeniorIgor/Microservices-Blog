@@ -2,6 +2,8 @@ import type { FC, FormEvent } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 
+import { SERVICE_URLS } from 'shared/constants';
+
 import type { CreatePostRequest, RefreshPosts } from '../../types';
 
 interface PostCreateProps {
@@ -16,7 +18,7 @@ const PostCreate: FC<PostCreateProps> = ({ refreshPosts }) => {
 
     const payload: CreatePostRequest = { title };
 
-    await axios.post('http://localhost:4000/posts', payload);
+    await axios.post(SERVICE_URLS.posts.posts.POST(), payload);
 
     await refreshPosts();
 

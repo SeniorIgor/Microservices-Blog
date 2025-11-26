@@ -1,6 +1,6 @@
-interface CommentCreatedData {
-  id: string;
-  content: string;
+import type { Comment } from './comments';
+
+interface CommentCreatedData extends Comment {
   postId: string;
 }
 

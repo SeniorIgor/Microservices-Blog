@@ -1,14 +1,21 @@
-// import express, { Request, Response } from "express";
+import type { Request, Response } from 'express';
+import express from 'express';
 
-// const app = express();
-// app.use(express.json());
+import { SERVICE_PORTS } from 'shared/constants';
+import type { EventItem } from 'shared/types';
 
-// const PORT = process.env.POSTS_PORT || 4000;
+const app = express();
+app.use(express.json());
 
-// app.get("/posts", (_req: Request, res: Response) => {
-//   res.json([{ id: 1, title: "First post" }]);
-// });
+app.post('/events', (req: Request<object, object, EventItem>, res: Response) => {
+  // const { type, data } = req.body;
 
-// app.listen(PORT, () => {
-//   console.log(`Posts service listening on port ${PORT}`);
-// });
+  // if (type === 'CommentCreated') {
+  // }
+
+  res.send({});
+});
+
+app.listen(SERVICE_PORTS.moderation, () => {
+  console.log(`Moderation service listening on port ${SERVICE_PORTS.moderation}`);
+});

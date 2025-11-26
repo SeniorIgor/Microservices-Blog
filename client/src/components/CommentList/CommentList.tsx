@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 
-import type { Comment } from '@types';
+import type { Comment } from 'shared/types';
 
 interface CommentListProps {
   comments: Array<Comment>;

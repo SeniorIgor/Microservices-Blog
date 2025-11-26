@@ -4,7 +4,8 @@ import { randomBytes } from 'crypto';
 import type { Request, Response } from 'express';
 import express from 'express';
 
-import type { EventItem, Post } from '@types';
+import { SERVICE_PORTS, SERVICE_URLS } from 'shared/constants/services';
+import type { EventItem, Post } from 'shared/types';
 
 import type { CreatePostRequest } from './types';
 
@@ -12,8 +13,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const PORT = process.env.POSTS_PORT || 4000;
-const EVENT_BUS_URL = process.env.EVENT_BUS_URL ?? 'http://localhost:4005';
+const PORT = SERVICE_PORTS.posts;
+const EVENT_BUS_URL = SERVICE_URLS.eventBus;
 const posts: Record<string, Post> = {};
 
 app.get('/posts', (_req: Request, res: Response) => {

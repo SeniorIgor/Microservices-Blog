@@ -2,6 +2,8 @@ import type { FC, FormEvent } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 
+import { SERVICE_URLS } from 'shared/constants';
+
 import type { CreateCommentRequest, RefreshPosts } from '../../types';
 
 interface CommentCreateProps {
@@ -17,7 +19,7 @@ const CommentCreate: FC<CommentCreateProps> = ({ postId, refreshPosts }) => {
 
     const payload: CreateCommentRequest = { content };
 
-    await axios.post(`http://localhost:4001/posts/${postId}/comments`, payload);
+    await axios.post(SERVICE_URLS.comments.comments.POST(postId), payload);
 
     await refreshPosts();
 

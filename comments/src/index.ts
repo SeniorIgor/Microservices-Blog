@@ -1,52 +1,39 @@
-import axios from 'axios';
 import cors from 'cors';
-import { randomBytes } from 'crypto';
 import type { Request, Response } from 'express';
 import express from 'express';
 
-import type { Comment, EventItem } from '@types';
+import { SERVICE_PORTS } from 'shared/constants';
+import type { EventItem } from 'shared/types';
+import { sendAnEvent } from 'shared/utils';
 
+import { createNewComment, getCommentsByPostId } from './store';
 import type { CreateCommentsParams, CreateCommentsRequest, GetCommentsParams } from './types';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-const PORT = process.env.POSTS_PORT || 4001;
-const EVENT_BUS_URL = process.env.EVENT_BUS_URL ?? 'http://localhost:4005';
-const commentByPostId: Record<string, Array<Comment>> = {};
+app.get('/posts/:postId/comments', (req: Request<GetCommentsParams>, res: Response) => {
+  const comments = getCommentsByPostId(req.params.postId);
 
-app.get('/posts/:id/comments', (req: Request<GetCommentsParams>, res: Response) => {
-  const { id: postId } = req.params;
-
-  res.send(commentByPostId[postId] || []);
+  res.send(comments);
 });
 
 app.post(
-  '/posts/:id/comments',
-  async (req: Request<CreateCommentsParams, object, CreateCommentsRequest>, res: Response) => {
-    const commentId = randomBytes(4).toString('hex');
-    const { content } = req.body;
-    const { id: postId } = req.params;
+  '/posts/:postId/comments',
+  async (req: Request<CreateCommentsParams, unknown, CreateCommentsRequest>, res: Response) => {
+    const { postId } = req.params;
+    const comment = createNewComment(req.body, postId);
 
-    const comments = commentByPostId[postId] || [];
+    const event: EventItem = { type: 'CommentCreated', data: { ...comment, postId } };
 
-    comments.push({ id: commentId, content });
+    const { status, errorMessage } = await sendAnEvent(event);
 
-    commentByPostId[postId] = comments;
-
-    const event: EventItem = {
-      type: 'CommentCreated',
-      data: { id: commentId, content, postId },
-    };
-
-    try {
-      await axios.post(`${EVENT_BUS_URL}/events`, event);
-    } catch (error) {
-      console.error('Failed to emit CommentCreated event', error);
-
-      return res.status(500).json({ error: 'Failed to emit event' });
+    if (status === 'error') {
+      return res.status(500).json({ errorMessage });
     }
+
+    const comments = getCommentsByPostId(postId);
 
     res.status(201).send(comments);
   },
@@ -58,6 +45,6 @@ app.post('/events', (req: Request<object, object, EventItem>, res: Response) => 
   res.send({});
 });
 
-app.listen(PORT, () => {
-  console.log(`Comments service listening on port ${PORT}`);
+app.listen(SERVICE_PORTS.comments, () => {
+  console.log(`Comments service listening on port ${SERVICE_PORTS.comments}`);
 });

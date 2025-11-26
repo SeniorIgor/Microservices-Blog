@@ -2,20 +2,19 @@ import axios from 'axios';
 import type { Request, Response } from 'express';
 import express from 'express';
 
-import type { EventItem } from '@types';
+import { SERVICE_PORTS, SERVICE_URLS } from 'shared/constants/services';
+import type { EventItem } from 'shared/types';
 
 const app = express();
 app.use(express.json());
-
-const PORT = process.env.EVENT_BUS_PORT || 4005;
 
 app.post('/events', async (req: Request<object, object, EventItem>, res: Response) => {
   const event = req.body;
 
   const targets = [
-    process.env.POSTS_SERVICE_URL ?? 'http://localhost:4000/events',
-    process.env.COMMENTS_SERVICE_URL ?? 'http://localhost:4001/events',
-    process.env.QUERY_SERVICE_URL ?? 'http://localhost:4002/events',
+    SERVICE_URLS.posts.events.POST(),
+    SERVICE_URLS.comments.events.POST(),
+    SERVICE_URLS.query.events.POST(),
   ];
 
   await Promise.all(
@@ -29,6 +28,6 @@ app.post('/events', async (req: Request<object, object, EventItem>, res: Respons
   res.send({ status: 'OK' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Event-Bus service listening on port ${PORT}`);
+app.listen(SERVICE_PORTS.eventBus, () => {
+  console.log(`Event-Bus service listening on port ${SERVICE_PORTS.eventBus}`);
 });
