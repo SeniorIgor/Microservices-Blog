@@ -1,11 +1,11 @@
+import type { Comment, Post } from 'shared/types';
+
 export interface GetCommentsParams {
-  postId: string;
+  postId: Post['id'];
 }
 
-export interface CreateCommentsRequest {
-  content: string;
-}
+export type CreateCommentsRequest = Pick<Comment, 'content'>;
 
 export interface CreateCommentsParams {
-  postId: string;
+  postId: Post['id'];
 }

@@ -3,11 +3,12 @@ import { useState } from 'react';
 import axios from 'axios';
 
 import { SERVICE_URLS } from 'shared/constants';
+import type { Post } from 'shared/types';
 
 import type { CreateCommentRequest, RefreshPosts } from '../../types';
 
 interface CommentCreateProps {
-  postId: string;
+  postId: Post['id'];
   refreshPosts: RefreshPosts;
 }
 

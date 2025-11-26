@@ -3,34 +3,36 @@ import type { Request, Response } from 'express';
 import express from 'express';
 
 import { SERVICE_PORTS } from 'shared/constants';
-import type { EventItem, PostsWithCommentsMap } from 'shared/types';
+import type { EventItem } from 'shared/types';
+
+import { addNewComment, createNewPost, getPosts, updatePostComment } from './store';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-const posts: PostsWithCommentsMap = {};
-
 app.get('/posts', (_req: Request, res: Response) => {
-  res.json(posts);
+  res.json(getPosts());
 });
 
 app.post('/events', (req: Request<unknown, unknown, EventItem>, res: Response) => {
   const { type, data } = req.body;
 
-  if (type === 'PostCreated') {
-    const { id, title } = data;
+  switch (type) {
+    case 'PostCreated':
+      createNewPost(data);
+      break;
 
-    posts[id] = { id, title, comments: [] };
-  }
+    case 'CommentCreated':
+      addNewComment(data);
+      break;
 
-  if (type === 'CommentCreated') {
-    const { postId, ...comment } = data;
-    const post = posts[postId];
+    case 'CommentUpdated':
+      updatePostComment(data);
+      break;
 
-    if (post) {
-      post.comments.push(comment);
-    }
+    default:
+      break;
   }
 
   res.send({});

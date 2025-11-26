@@ -6,7 +6,7 @@ import { SERVICE_PORTS } from 'shared/constants';
 import type { EventItem } from 'shared/types';
 import { sendAnEvent } from 'shared/utils';
 
-import { createNewComment, getCommentsByPostId } from './store';
+import { createNewComment, getCommentsByPostId, updateCommentStatus } from './store';
 import type { CreateCommentsParams, CreateCommentsRequest, GetCommentsParams } from './types';
 
 const app = express();
@@ -39,8 +39,18 @@ app.post(
   },
 );
 
-app.post('/events', (req: Request<object, object, EventItem>, res: Response) => {
-  console.log('Comments Service Received Event', req.body.type);
+app.post('/events', async (req: Request<object, object, EventItem>, res: Response) => {
+  const { type, data } = req.body;
+
+  if (type === 'CommentModerated') {
+    updateCommentStatus(data);
+
+    const { status, errorMessage } = await sendAnEvent({ type: 'CommentUpdated', data });
+
+    if (status === 'error') {
+      return res.status(500).json({ errorMessage });
+    }
+  }
 
   res.send({});
 });

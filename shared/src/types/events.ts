@@ -1,13 +1,13 @@
 import type { Comment } from './comments';
 import type { Post } from './posts';
 
-interface CommentData extends Comment {
-  postId: string;
+export interface PostComment extends Comment {
+  postId: Post['id'];
 }
 
 interface CommentCreated {
   type: 'CommentCreated';
-  data: CommentData;
+  data: PostComment;
 }
 
 interface PostCreated {
@@ -17,7 +17,12 @@ interface PostCreated {
 
 interface CommentModerated {
   type: 'CommentModerated';
-  data: CommentData;
+  data: PostComment;
 }
 
-export type EventItem = CommentCreated | PostCreated | CommentModerated;
+interface CommentUpdated {
+  type: 'CommentUpdated';
+  data: PostComment;
+}
+
+export type EventItem = CommentCreated | PostCreated | CommentModerated | CommentUpdated;
