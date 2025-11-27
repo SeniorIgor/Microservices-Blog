@@ -1,5 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
 
-npm run type-check
-npm run fix:cache
-git add .
+echo "🔍 Type-checking affected projects..."
+npm run type-check:affected || exit 1
+
+echo "✏️ Fixing lint in affected projects..."
+npm run lint:fix:affected || exit 1

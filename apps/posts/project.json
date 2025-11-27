@@ -1,0 +1,39 @@
+{
+  "name": "posts",
+  "root": "apps/posts",
+  "sourceRoot": "apps/posts/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build --workspace @org/posts"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run dev --workspace @org/posts"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run start --workspace @org/posts"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run lint --workspace @org/posts"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run type-check --workspace @org/posts"
+      }
+    }
+  },
+  "tags": ["scope:backend", "service:posts"]
+}

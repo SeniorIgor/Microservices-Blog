@@ -1,0 +1,39 @@
+{
+  "name": "client",
+  "root": "apps/client",
+  "sourceRoot": "apps/client/src",
+  "projectType": "application",
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run dev --workspace @org/client"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build --workspace @org/client"
+      }
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run preview --workspace @org/client"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run lint --workspace @org/client"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run type-check --workspace @org/client"
+      }
+    }
+  },
+  "tags": ["scope:frontend", "app:client"]
+}

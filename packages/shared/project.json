@@ -1,0 +1,33 @@
+{
+  "name": "shared",
+  "root": "packages/shared",
+  "sourceRoot": "packages/shared/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build --workspace @org/shared"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run dev --workspace @org/shared"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run lint --workspace @org/shared"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run type-check --workspace @org/shared"
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:lib"]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "event-bus",
+  "root": "apps/event-bus",
+  "sourceRoot": "apps/event-bus/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build --workspace @org/event-bus"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run dev --workspace @org/event-bus"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run start --workspace @org/event-bus"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run lint --workspace @org/event-bus"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run type-check --workspace @org/event-bus"
+      }
+    }
+  },
+  "tags": ["scope:backend", "service:event-bus"]
+}

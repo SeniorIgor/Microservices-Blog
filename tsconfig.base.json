@@ -9,6 +9,10 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "noImplicitAny": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@org/shared": ["packages/shared/src/index.ts"],
+      "@org/shared/*": ["packages/shared/src/*"]
+    }
   }
 }
