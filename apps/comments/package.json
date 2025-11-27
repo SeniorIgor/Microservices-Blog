@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
-    "dev": "nodemon --watch src --exec ts-node src/index.ts",
+    "dev": "nodemon --watch src --exec node -r ts-node/register -r tsconfig-paths/register src/index.ts",
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
     "type-check": "tsc -p tsconfig.json --noEmit"
   },

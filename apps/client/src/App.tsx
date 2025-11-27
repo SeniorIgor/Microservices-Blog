@@ -2,16 +2,16 @@ import { type FC, useEffect, useState } from 'react';
 import axios from 'axios';
 
 import type { PostsWithCommentsMap } from '@org/shared';
-import { SERVICE_URLS } from '@org/shared';
 
 import PostCreate from './components/PostCreate/PostCreate';
 import PostList from './components/PostList/PostList';
+import { API } from './constants';
 
 const App: FC = () => {
   const [posts, setPosts] = useState<PostsWithCommentsMap>({});
 
   const fetchPosts = async () => {
-    const res = await axios.get<PostsWithCommentsMap>(SERVICE_URLS.query.posts.GET());
+    const res = await axios.get<PostsWithCommentsMap>(API.query.listPosts());
 
     setPosts(res.data);
   };

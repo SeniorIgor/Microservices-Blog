@@ -13,7 +13,6 @@
   "scripts": {
     "build": "nx run-many --target=build --all",
     "build:affected": "nx affected --target=build",
-    "dev:all": "nx run-many --target=dev --all --parallel",
     "lint": "nx run-many --target=lint --all",
     "lint:affected": "nx affected --target=lint",
     "lint:fix": "nx run-many --target=lint --all -- --fix",
@@ -43,6 +42,8 @@
     "husky": "^9.1.7",
     "nx": "22.1.2",
     "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "4.9.5",
     "vite-tsconfig-paths": "^5.1.4"
   }

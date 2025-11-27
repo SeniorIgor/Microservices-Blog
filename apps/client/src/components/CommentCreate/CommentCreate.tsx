@@ -3,8 +3,8 @@ import { useState } from 'react';
 import axios from 'axios';
 
 import type { Post } from '@org/shared';
-import { SERVICE_URLS } from '@org/shared';
 
+import { API } from '../../constants';
 import type { CreateCommentRequest, RefreshPosts } from '../../types';
 
 interface CommentCreateProps {
@@ -20,7 +20,7 @@ const CommentCreate: FC<CommentCreateProps> = ({ postId, refreshPosts }) => {
 
     const payload: CreateCommentRequest = { content };
 
-    await axios.post(SERVICE_URLS.comments.comments.POST(postId), payload);
+    await axios.post(API.comments.create(postId), payload);
 
     await refreshPosts();
 

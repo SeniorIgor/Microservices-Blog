@@ -12,10 +12,10 @@ app.post('/events', async (req: Request<object, object, EventItem>, res: Respons
   const event = req.body;
 
   const targets = [
-    SERVICE_URLS.posts.events.POST(),
-    SERVICE_URLS.comments.events.POST(),
-    SERVICE_URLS.query.events.POST(),
-    SERVICE_URLS.moderation.events.POST(),
+    SERVICE_URLS.posts.events(),
+    SERVICE_URLS.comments.events(),
+    SERVICE_URLS.query.events(),
+    SERVICE_URLS.moderation.events(),
   ];
 
   await Promise.all(

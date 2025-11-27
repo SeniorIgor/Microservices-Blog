@@ -1,62 +1,77 @@
-export const SERVICE_PORTS = {
-  client: process.env.CLIENT_PORT || 3000,
-  posts: process.env.POSTS_PORT || 4000,
-  comments: process.env.COMMENTS_PORT || 4001,
-  query: process.env.QUERY_POST || 4002,
-  moderation: process.env.MODERATION_PORT || 4003,
-  eventBus: process.env.EVENT_BUS_PORT || 4005,
+type ServiceName = 'posts' | 'comments' | 'query' | 'moderation' | 'eventBus';
+
+const getPort = (envName: string, fallback: number): number => {
+  const raw = process.env[envName];
+  if (!raw) return fallback;
+
+  const num = Number(raw);
+  return Number.isNaN(num) ? fallback : num;
 };
 
-const CLIENT_URL = `http://localhost${SERVICE_PORTS.client}`;
-const POSTS_URL = `http://localhost${SERVICE_PORTS.client}`;
-const COMMENTS_URL = `http://localhost${SERVICE_PORTS.client}`;
-const EVENT_BUS_URL = `http://localhost${SERVICE_PORTS.client}`;
-const MODERATION_URL = `http://localhost${SERVICE_PORTS.client}`;
-const QUERY_URL = `http://localhost${SERVICE_PORTS.client}`;
+export const SERVICE_PORTS: Record<ServiceName, number> = {
+  posts: getPort('POSTS_PORT', 4000),
+  comments: getPort('COMMENTS_PORT', 4001),
+  query: getPort('QUERY_PORT', 4002),
+  moderation: getPort('MODERATION_PORT', 4003),
+  eventBus: getPort('EVENT_BUS_PORT', 4005),
+};
 
-export const SERVICE_URLS = {
-  client: {
-    home: CLIENT_URL,
-  },
+const makeLocalUrl = (port: number): string => `http://localhost:${port}`;
+
+export const SERVICE_BASE_URLS: Record<ServiceName, string> = {
+  posts: makeLocalUrl(SERVICE_PORTS.posts),
+  comments: makeLocalUrl(SERVICE_PORTS.comments),
+  query: makeLocalUrl(SERVICE_PORTS.query),
+  moderation: makeLocalUrl(SERVICE_PORTS.moderation),
+  eventBus: makeLocalUrl(SERVICE_PORTS.eventBus),
+};
+
+// Made some change
+
+export const ROUTES = {
   posts: {
-    home: POSTS_URL,
-    posts: {
-      GET: () => `${POSTS_URL}/posts`,
-      POST: () => `${POSTS_URL}/posts`,
-    },
-    events: {
-      POST: () => `${POSTS_URL}/events`,
-    },
+    list: '/posts',
+    events: '/events',
   },
   comments: {
-    home: COMMENTS_URL,
-    comments: {
-      GET: (postId: string) => `${COMMENTS_URL}/posts/${postId}/comments`,
-      POST: (postId: string) => `${COMMENTS_URL}/posts/${postId}/comments`,
-    },
-    events: {
-      POST: () => `${COMMENTS_URL}/events`,
-    },
-  },
-  eventBus: {
-    home: EVENT_BUS_URL,
-    events: {
-      POST: () => `${EVENT_BUS_URL}/events`,
-    },
-  },
-  moderation: {
-    home: MODERATION_URL,
-    events: {
-      POST: () => `${MODERATION_URL}/events`,
-    },
+    list: (postId: string) => `/posts/${postId}/comments`,
+    events: '/events',
   },
   query: {
-    home: QUERY_URL,
-    posts: {
-      GET: () => `${QUERY_URL}/posts`,
-    },
-    events: {
-      POST: () => `${QUERY_URL}/events`,
-    },
+    listPosts: '/posts',
+    events: '/events',
   },
-};
+  moderation: {
+    events: '/events',
+  },
+  eventBus: {
+    events: '/events',
+  },
+} as const;
+
+export const SERVICE_URLS = {
+  posts: {
+    list: () => `${SERVICE_BASE_URLS.posts}${ROUTES.posts.list}`,
+    create: () => `${SERVICE_BASE_URLS.posts}${ROUTES.posts.list}`,
+    events: () => `${SERVICE_BASE_URLS.posts}${ROUTES.posts.events}`,
+  },
+
+  comments: {
+    list: (postId: string) => `${SERVICE_BASE_URLS.comments}${ROUTES.comments.list(postId)}`,
+    create: (postId: string) => `${SERVICE_BASE_URLS.comments}${ROUTES.comments.list(postId)}`,
+    events: () => `${SERVICE_BASE_URLS.comments}${ROUTES.comments.events}`,
+  },
+
+  query: {
+    listPosts: () => `${SERVICE_BASE_URLS.query}${ROUTES.query.listPosts}`,
+    events: () => `${SERVICE_BASE_URLS.query}${ROUTES.query.events}`,
+  },
+
+  moderation: {
+    events: () => `${SERVICE_BASE_URLS.moderation}${ROUTES.moderation.events}`,
+  },
+
+  eventBus: {
+    events: () => `${SERVICE_BASE_URLS.eventBus}${ROUTES.posts.events}`,
+  },
+} as const;
