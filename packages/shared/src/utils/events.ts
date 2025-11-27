@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import type { EventItem } from '@org/shared';
-import { SERVICE_URLS } from '@org/shared';
+import { SERVICE_URLS } from '../constants';
+import type { EventItem } from '../types';
 
 export const sendAnEvent = async (event: EventItem) => {
   try {

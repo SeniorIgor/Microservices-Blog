@@ -84,7 +84,7 @@ module.exports = {
   overrides: [
     // React frontend
     {
-      files: ["client/src/**/*.{ts,tsx,js,jsx}"],
+      files: ["**/client/src/**/*.{ts,tsx,js,jsx}"],
       env: {
         browser: true,
         node: false,
@@ -110,7 +110,12 @@ module.exports = {
 
     // Node backends
     {
-      files: ["posts/src/**/*.ts", "comments/src/**/*.ts"],
+      files: [
+        "**/posts/src/**/*.ts",
+        "**/comments/src/**/*.ts",
+        "**/query/src/**/*.ts",
+        "**/moderation/src/**/*.ts",
+        "**/event-bus/src/**/*.ts"],
       env: {
         node: true,
         browser: false,
