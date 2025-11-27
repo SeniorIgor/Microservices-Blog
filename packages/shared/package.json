@@ -7,7 +7,7 @@
   "files": ["dist"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "tsc -w -p tsconfig.json",
+    "build:watch": "tsc -w -p tsconfig.json",
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
     "type-check": "tsc -p tsconfig.json --noEmit"
   },

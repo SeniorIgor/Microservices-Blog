@@ -20,5 +20,8 @@
     "type-check": {
       "cache": true
     }
+  },
+  "tui": {
+    "autoExit": true
   }
 }

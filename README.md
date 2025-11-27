@@ -1,142 +1,230 @@
-# Microservices App (TypeScript • Express • React • npm Workspaces)
+# Microservices Blog -- Nx Monorepo (TypeScript • Express • React)
 
-This monorepo contains a small microservices setup built with **TypeScript**, **Express**, **React**, and **npm workspaces**.
-
----
-
-## 📦 Project Structure
-
-```text
-project/
-  client/      # React + Vite frontend
-  posts/       # Posts service (Express + TypeScript)
-  comments/    # Comments service (Express + TypeScript)
-  query/       # Query service (Express + TypeScript)
-  event-bus/   # Event bus for cross-service communication
-  moderation/  # Moderation service
-```
+This repository is a small blog microservices system implemented as an
+**Nx + npm workspaces** monorepo. It contains multiple Express services,
+a React + Vite frontend, and a shared TypeScript library used across all
+services.
 
 ---
 
-## 🔧 Node & npm Versions
+## 🧱 Tech Stack
 
-This project uses fixed versions to ensure consistent linting, formatting, and TypeScript behavior:
-
-```
-Node: 24.11.1
-npm: 11.6.2
-```
-
-Use **nvm** to install and activate the correct version:
-
-```bash
-nvm install 24.11.1
-nvm use 24.11.1
-```
+- Node.js / TypeScript
+- Express for backend services
+- React + Vite for the frontend (`apps/client`)
+- Nx for running tasks across the monorepo
+- npm workspaces for dependency & package management
+- ESLint + Prettier for code style and linting
+- Husky + commitlint for git hooks and commit message checks
 
 ---
 
-## 🚀 Installation
+## 📁 Monorepo Structure
 
-Install all dependencies for every workspace:
+The repository uses `apps/*` for runnable applications and `packages/*`
+for shared libraries.
+
+    .
+    ├── apps/
+    │   ├── client/        # React + Vite frontend (@org/client)
+    │   ├── posts/         # Posts service (Express + TS) (@org/posts)
+    │   ├── comments/      # Comments service (Express + TS) (@org/comments)
+    │   ├── query/         # Query service for aggregated read model (@org/query)
+    │   ├── event-bus/     # Event Bus for cross-service communication (@org/event-bus)
+    │   └── moderation/    # Moderation service (@org/moderation)
+    │
+    ├── packages/
+    │   └── shared/        # Shared types, constants, and utils (@org/shared)
+    │       ├── src/constants/   # SERVICE_PORTS, ROUTES, SERVICE_URLS, etc.
+    │       ├── src/types/       # Post, Comment, EventItem, Query types…
+    │       └── src/utils/       # sendAnEvent, setTimeout helper, etc.
+    │
+    ├── nx.json             # Nx workspace config
+    ├── tsconfig.base.json  # Root TS config + path aliases
+    ├── package.json        # Root scripts and workspaces
+    └── .eslintrc.cjs       # Shared ESLint config
+
+---
+
+## ⚙️ Requirements
+
+The root `package.json` currently specifies:
+
+```json
+"engines": {
+  "node": "24.11.1",
+  "npm": "11.6.2"
+}
+```
+
+Use these versions or adjust according to your system.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
+Installs dependencies for all workspaces.
+
 ---
 
-## 🧪 Type Checking
+## 🧩 Shared Library: @org/shared
 
-Run TypeScript checks for the entire project:
+Imported as:
 
-```bash
-npm run type-check
+```ts
+import { SERVICE_PORTS, SERVICE_URLS, sendAnEvent, type EventItem } from '@org/shared';
 ```
 
+### Provides:
+
+#### Ports (env-overridable)
+
+    SERVICE_PORTS.posts       // 4000 → POSTS_PORT
+    SERVICE_PORTS.comments    // 4001 → COMMENTS_PORT
+    SERVICE_PORTS.query       // 4002 → QUERY_PORT
+    SERVICE_PORTS.moderation  // 4003 → MODERATION_PORT
+    SERVICE_PORTS.eventBus    // 4005 → EVENT_BUS_PORT
+
+#### Base URLs & routes
+
+    SERVICE_URLS.posts.list()
+    SERVICE_URLS.eventBus.events()
+
+#### Types
+
+- Post
+- Comment
+- EventItem
+
+#### Utils
+
+- sendAnEvent(event)
+
+> ℹ️ `@org/shared` is a **library**, not a runnable service.
+
 ---
 
-## 🧼 Linting
+## 🧪 Root Scripts
 
-Run ESLint across all services:
+### Build
+
+```bash
+npm run build
+npm run build:affected
+```
+
+### Development
+
+```bash
+npm run dev:all
+```
+
+### Lint
 
 ```bash
 npm run lint
-```
-
-To auto-fix formatting issues:
-
-```bash
 npm run lint:fix
+npm run lint:affected
+npm run lint:fix:affected
+```
+
+### Type Check
+
+```bash
+npm run type-check
+npm run type-check:affected
+```
+
+Husky hooks use `:affected` versions.
+
+---
+
+## 🧷 Running Individual Apps
+
+### Using Nx
+
+```bash
+npx nx run client:dev
+npx nx run posts:dev
+npx nx run comments:dev
+npx nx run query:dev
+npx nx run event-bus:dev
+npx nx run moderation:dev
+```
+
+### Using npm workspaces
+
+```bash
+npm run dev --workspace @org/client
+npm run dev --workspace @org/posts
+npm run dev --workspace @org/comments
+npm run dev --workspace @org/query
+npm run dev --workspace @org/event-bus
+npm run dev --workspace @org/moderation
 ```
 
 ---
 
-## ▶️ Development
+## 🌐 Ports & Environment Variables
 
-Run each service in its own terminal:
+Default ports: - Posts: 4000 - Comments: 4001 - Query: 4002 -
+Moderation: 4003 - Event Bus: 4005
 
-### Posts service
-
-```bash
-cd posts
-npm run dev
-```
-
-### Comments service
+Override:
 
 ```bash
-cd comments
-npm run dev
-```
-
-### Query service
-
-```bash
-cd query
-npm run dev
-```
-
-### Event Bus
-
-```bash
-cd event-bus
-npm run dev
-```
-
-### Moderation service
-
-```bash
-cd moderation
-npm run dev
-```
-
-### Client (React + Vite)
-
-```bash
-cd client
-npm run dev
+POSTS_PORT=5000
+COMMENTS_PORT=5001
+QUERY_PORT=5002
+MODERATION_PORT=5003
+EVENT_BUS_PORT=5005
 ```
 
 ---
 
-## 📝 Commit Convention
+## 🧹 Linting, Type Checking & Formatting
 
-The project uses **Conventional Commits** enforced by Commitlint + Husky.
+Global configuration: - `.eslintrc.cjs` - `tsconfig.base.json`
 
-Example commit messages:
+Run manually:
 
+```bash
+npm run lint
+npm run type-check
 ```
-feat: add new comments route
-fix(posts): handle missing data
-chore: update dependencies
+
+Husky Hooks: - `pre-commit`: type-check + lint affected - `commit-msg`:
+commitlint
+
+---
+
+## 🗺️ Nx Workspace Tools
+
+Dependency graph:
+
+```bash
+npx nx graph
+```
+
+List projects:
+
+```bash
+npx nx list --projects
 ```
 
 ---
 
-## ✔ Summary
+## ✅ Summary
 
-- Monorepo powered by **npm workspaces**
-- Shared **TypeScript**, **ESLint**, and **Prettier** configuration
-- React frontend + multiple Express microservices
-- Git hooks enabled (**pre-commit**, **commit-msg**)
+- Nx + npm workspaces monorepo
+- Multiple Express microservices
+- React + Vite frontend
+- `@org/shared` for cross-service types/constants/utils
+- Centralized build, dev, lint, and type-check commands
+- Husky + commitlint included for clean commits
