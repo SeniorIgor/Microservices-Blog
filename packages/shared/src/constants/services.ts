@@ -72,6 +72,7 @@ export const SERVICE_URLS = {
   },
 
   eventBus: {
-    events: () => `${SERVICE_BASE_URLS.eventBus}${ROUTES.posts.events}`,
+    list: () => `${SERVICE_BASE_URLS.eventBus}${ROUTES.posts.events}`,
+    create: () => `${SERVICE_BASE_URLS.eventBus}${ROUTES.posts.events}`,
   },
 } as const;

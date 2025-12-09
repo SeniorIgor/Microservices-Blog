@@ -94,7 +94,7 @@ import { SERVICE_PORTS, SERVICE_URLS, sendAnEvent, type EventItem } from '@org/s
 #### Base URLs & routes
 
     SERVICE_URLS.posts.list()
-    SERVICE_URLS.eventBus.events()
+    SERVICE_URLS.eventBus.create()
 
 #### Types
 

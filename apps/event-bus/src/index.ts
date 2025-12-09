@@ -5,11 +5,15 @@ import express from 'express';
 import type { EventItem } from '@org/shared';
 import { SERVICE_PORTS, SERVICE_URLS } from '@org/shared';
 
+import { addNewEvent, getAllEvents } from './store';
+
 const app = express();
 app.use(express.json());
 
-app.post('/events', async (req: Request<object, object, EventItem>, res: Response) => {
+app.post('/events', async (req: Request<unknown, unknown, EventItem>, res: Response) => {
   const event = req.body;
+
+  addNewEvent(event);
 
   const targets = [
     SERVICE_URLS.posts.events(),
@@ -27,6 +31,10 @@ app.post('/events', async (req: Request<object, object, EventItem>, res: Respons
   );
 
   res.send({ status: 'OK' });
+});
+
+app.get('/events', (_req: Request, res: Response) => {
+  res.send(getAllEvents());
 });
 
 app.listen(SERVICE_PORTS.eventBus, () => {

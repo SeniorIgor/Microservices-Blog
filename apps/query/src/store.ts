@@ -1,4 +1,4 @@
-import type { Post, PostComment, PostsWithComments, PostsWithCommentsMap } from '@org/shared';
+import type { EventItem, Post, PostComment, PostsWithComments, PostsWithCommentsMap } from '@org/shared';
 
 const postsStore: PostsWithCommentsMap = {};
 
@@ -40,5 +40,30 @@ export const updatePostComment = (data: PostComment) => {
     }
 
     return item;
+  });
+};
+
+export const handleEvent = ({ type, data }: EventItem) => {
+  switch (type) {
+    case 'PostCreated':
+      createNewPost(data);
+      break;
+
+    case 'CommentCreated':
+      addNewComment(data);
+      break;
+
+    case 'CommentUpdated':
+      updatePostComment(data);
+      break;
+
+    default:
+      break;
+  }
+};
+
+export const initializeStore = (events: Array<EventItem>) => {
+  events.forEach((event) => {
+    handleEvent(event);
   });
 };

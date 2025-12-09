@@ -5,7 +5,7 @@ import type { EventItem } from '../types';
 
 export const sendAnEvent = async (event: EventItem) => {
   try {
-    await axios.post(SERVICE_URLS.eventBus.events(), event);
+    await axios.post(SERVICE_URLS.eventBus.create(), event);
   } catch (error) {
     const errorMessage = `Failed to emit ${event.type} event`;
 
