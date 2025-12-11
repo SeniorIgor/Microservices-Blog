@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.base
-    image: base
+    image: blog-base
 
   client:
     container_name: client
@@ -14,6 +14,8 @@ services:
       - base
     ports:
       - "3000:3000"
+    env_file:
+      - docker.env
     networks:
       - blog-net
     restart: unless-stopped
@@ -27,6 +29,8 @@ services:
       - base
     ports:
       - "4000:4000"
+    env_file:
+      - docker.env
     networks:
       - blog-net
     restart: unless-stopped
@@ -40,6 +44,8 @@ services:
       - base
     ports:
       - "4001:4001"
+    env_file:
+      - docker.env
     networks:
       - blog-net
     restart: unless-stopped
@@ -53,6 +59,8 @@ services:
       - base
     ports:
       - "4002:4002"
+    env_file:
+      - docker.env
     networks:
       - blog-net
     restart: unless-stopped
@@ -66,6 +74,8 @@ services:
       - base
     ports:
       - "4003:4003"
+    env_file:
+      - docker.env
     networks:
       - blog-net
     restart: unless-stopped
@@ -79,6 +89,8 @@ services:
       - base
     ports:
       - "4005:4005"
+    env_file:
+      - docker.env
     networks:
       - blog-net
     restart: unless-stopped

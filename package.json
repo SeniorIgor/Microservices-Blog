@@ -13,15 +13,15 @@
   "scripts": {
     "build": "nx run-many --target=build --all",
     "build:affected": "nx affected --target=build",
-    "start:all": "nx run-many --target=start --all --parallel --maxParallel=10 --exclude=shared",
-    "dev:all": "nx run-many --target=dev --all --parallel --maxParallel=10 --exclude=shared",
+    "start": "nx run-many --target=start --all --parallel --maxParallel=10 --exclude=shared",
+    "dev": "nx run-many --target=dev --all --parallel --maxParallel=10 --exclude=shared",
     "lint": "nx run-many --target=lint --all",
     "lint:affected": "nx affected --target=lint",
     "lint:fix": "nx run-many --target=lint --all -- --fix",
     "lint:fix:affected": "nx affected --target=lint -- --fix",
     "type-check": "nx run-many --target=type-check --all",
     "type-check:affected": "nx affected --target=type-check",
-    "docker:build": "docker compose build",
+    "docker:build": "npm run docker:build:base && docker compose build",
     "docker:up": "docker compose up",
     "docker:build:base": "docker compose build base",
     "docker:build:query": "npm run docker:build:base && docker compose build query",
@@ -35,8 +35,7 @@
     "docker:build:comments": "npm run docker:build:base && docker compose build comments",
     "docker:up:comments": "docker compose up comments",
     "docker:build:client": "npm run docker:build:base && docker compose build client",
-    "docker:up:client": "docker compose up client",
-    "prepare": "husky install"
+    "docker:up:client": "docker compose up client"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",

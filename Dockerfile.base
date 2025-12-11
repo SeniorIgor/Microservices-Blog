@@ -5,5 +5,20 @@ WORKDIR /app
 # Copy root workspace files
 COPY package*.json ./
 COPY nx.json tsconfig.base.json ./
+COPY tsup.config.ts ./
+
+# Copy only the package.json for each package
+COPY packages/shared/package.json packages/shared/
+COPY apps/client/package.json apps/client/
+COPY apps/posts/package.json apps/posts/
+COPY apps/comments/package.json apps/comments/
+COPY apps/query/package.json apps/query/
+COPY apps/moderation/package.json apps/moderation/
+COPY apps/event-bus/package.json apps/event-bus/
 
 RUN npm ci
+
+# Copy everything
+COPY . .
+
+RUN npm run build

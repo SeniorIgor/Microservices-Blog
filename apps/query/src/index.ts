@@ -25,7 +25,7 @@ app.post('/events', (req: Request<unknown, unknown, EventItem>, res: Response) =
 app.listen(SERVICE_PORTS.query, async () => {
   console.log(`Query service listening on port ${SERVICE_PORTS.query}`);
 
-  const { data, status } = await axios.get(SERVICE_URLS.eventBus.list());
+  const { data, status } = await axios.get(SERVICE_URLS.eventBus.events());
 
   if (status === 200) {
     initializeStore(data);

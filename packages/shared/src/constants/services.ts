@@ -1,5 +1,18 @@
+// TYPES
 type ServiceName = 'posts' | 'comments' | 'query' | 'moderation' | 'eventBus';
 
+// ENV HELPERS
+const requireEnv = (key: string): string => {
+  const value = process.env[key];
+
+  if (!value) {
+    throw new Error(`Missing required env variable: ${key}`);
+  }
+
+  return value.replace(/\/+$/, ''); // remove trailing slash
+};
+
+// PORT HELPER (fixed!)
 const getPort = (envName: string, fallback: number): number => {
   const raw = process.env[envName];
   if (!raw) return fallback;
@@ -8,7 +21,8 @@ const getPort = (envName: string, fallback: number): number => {
   return Number.isNaN(num) ? fallback : num;
 };
 
-export const SERVICE_PORTS: Record<ServiceName, number> = {
+// PORTS THAT SERVICES LISTEN ON
+export const SERVICE_PORTS = {
   posts: getPort('POSTS_PORT', 4000),
   comments: getPort('COMMENTS_PORT', 4001),
   query: getPort('QUERY_PORT', 4002),
@@ -16,18 +30,16 @@ export const SERVICE_PORTS: Record<ServiceName, number> = {
   eventBus: getPort('EVENT_BUS_PORT', 4005),
 };
 
-const makeLocalUrl = (port: number): string => `http://localhost:${port}`;
-
+// BASE URLS (FROM ENV)
 export const SERVICE_BASE_URLS: Record<ServiceName, string> = {
-  posts: makeLocalUrl(SERVICE_PORTS.posts),
-  comments: makeLocalUrl(SERVICE_PORTS.comments),
-  query: makeLocalUrl(SERVICE_PORTS.query),
-  moderation: makeLocalUrl(SERVICE_PORTS.moderation),
-  eventBus: makeLocalUrl(SERVICE_PORTS.eventBus),
+  posts: requireEnv('POSTS_URL'),
+  comments: requireEnv('COMMENTS_URL'),
+  query: requireEnv('QUERY_URL'),
+  moderation: requireEnv('MODERATION_URL'),
+  eventBus: requireEnv('EVENT_BUS_URL'),
 };
 
-// Made some change
-
+// ROUTES
 export const ROUTES = {
   posts: {
     list: '/posts',
@@ -49,6 +61,7 @@ export const ROUTES = {
   },
 } as const;
 
+// FINAL URL BUILDERS
 export const SERVICE_URLS = {
   posts: {
     list: () => `${SERVICE_BASE_URLS.posts}${ROUTES.posts.list}`,
@@ -72,7 +85,7 @@ export const SERVICE_URLS = {
   },
 
   eventBus: {
-    list: () => `${SERVICE_BASE_URLS.eventBus}${ROUTES.posts.events}`,
-    create: () => `${SERVICE_BASE_URLS.eventBus}${ROUTES.posts.events}`,
+    events: () => `${SERVICE_BASE_URLS.eventBus}${ROUTES.eventBus.events}`,
+    create: () => `${SERVICE_BASE_URLS.eventBus}${ROUTES.eventBus.events}`,
   },
 } as const;

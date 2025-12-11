@@ -1,14 +1,5 @@
 # -------- Builder stage --------
-FROM base AS builder
-
-WORKDIR /app
-
-# Copy only the app + shared packages
-COPY packages ./packages
-COPY apps/client ./apps/client
-
-# Build app using Nx
-RUN npx nx build client
+FROM blog-base AS builder
 
 # -------- Runtime stage --------
 FROM node:24-alpine

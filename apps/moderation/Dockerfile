@@ -1,12 +1,5 @@
 # -------- Builder stage --------
-FROM base AS builder
-
-# Copy only the app + shared packages
-COPY packages ./packages
-COPY apps/moderation ./apps/moderation
-
-# Build app using Nx
-RUN npx nx build moderation
+FROM blog-base AS builder
 
 # -------- Runtime stage --------
 FROM node:24-alpine
