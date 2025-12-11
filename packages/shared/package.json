@@ -6,8 +6,8 @@
   "types": "./dist/index.d.ts",
   "files": ["dist"],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "build:watch": "tsc -w -p tsconfig.json",
+    "build": "tsup",
+    "build:watch": "tsup --watch",
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
     "type-check": "tsc -p tsconfig.json --noEmit"
   },
