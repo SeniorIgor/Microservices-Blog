@@ -7,7 +7,7 @@ export default defineConfig({
   target: 'node18',
   sourcemap: false,
   clean: true,
-  bundle: false, // ❗ do NOT bundle the shared lib
-  dts: true, // ❗ generate .d.ts types
+  bundle: true,
+  dts: true,
   splitting: false,
 });
