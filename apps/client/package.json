@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
+    "build": "rimraf dist && vite build",
+    "start": "vite preview --port 3000 --host",
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
     "type-check": "tsc -p tsconfig.json --noEmit"
   },

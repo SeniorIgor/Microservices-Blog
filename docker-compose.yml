@@ -1,0 +1,88 @@
+services:
+  base:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+    image: base
+
+  client:
+    container_name: client
+    build:
+      context: .
+      dockerfile: apps/client/Dockerfile
+    depends_on:
+      - base
+    ports:
+      - "3000:3000"
+    networks:
+      - blog-net
+    restart: unless-stopped
+
+  posts:
+    container_name: posts
+    build:
+      context: .
+      dockerfile: apps/posts/Dockerfile
+    depends_on:
+      - base
+    ports:
+      - "4000:4000"
+    networks:
+      - blog-net
+    restart: unless-stopped
+
+  comments:
+    container_name: comments
+    build:
+      context: .
+      dockerfile: apps/comments/Dockerfile
+    depends_on:
+      - base
+    ports:
+      - "4001:4001"
+    networks:
+      - blog-net
+    restart: unless-stopped
+
+  query:
+    container_name: query
+    build:
+      context: .
+      dockerfile: apps/query/Dockerfile
+    depends_on:
+      - base
+    ports:
+      - "4002:4002"
+    networks:
+      - blog-net
+    restart: unless-stopped
+
+  moderation:
+    container_name: moderation
+    build:
+      context: .
+      dockerfile: apps/moderation/Dockerfile
+    depends_on:
+      - base
+    ports:
+      - "4003:4003"
+    networks:
+      - blog-net
+    restart: unless-stopped
+
+  event-bus:
+    container_name: event-bus
+    build:
+      context: .
+      dockerfile: apps/event-bus/Dockerfile
+    depends_on:
+      - base
+    ports:
+      - "4005:4005"
+    networks:
+      - blog-net
+    restart: unless-stopped
+
+networks:
+  blog-net:
+    driver: bridge

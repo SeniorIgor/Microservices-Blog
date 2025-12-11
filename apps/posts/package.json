@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "rimraf dist && tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "dev": "nodemon --watch src --exec node -r ts-node/register -r tsconfig-paths/register src/index.ts",
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
-    "type-check": "tsc -p tsconfig.json --noEmit"
+    "type-check": "tsc -p tsconfig.json --noEmit" 
   },
   "author": "",
   "license": "ISC",

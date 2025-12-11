@@ -33,6 +33,18 @@
       "options": {
         "command": "npm run type-check --workspace @org/query"
       }
+    },
+    "docker:build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run docker:build --workspace @org/posts"
+      }
+    },
+    "docker:up": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run docker:up --workspace @org/posts"
+      }
     }
   },
   "tags": ["scope:backend", "service:query"]

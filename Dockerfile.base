@@ -1,0 +1,9 @@
+FROM node:24-alpine AS builder
+
+WORKDIR /app
+
+# Copy root workspace files
+COPY package*.json ./
+COPY nx.json tsconfig.base.json ./
+
+RUN npm ci
