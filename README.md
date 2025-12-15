@@ -1,182 +1,101 @@
-# Microservices Blog -- Nx Monorepo (TypeScript • Express • React)
+# Microservices Blog (Nx Monorepo)
 
-This repository is a small blog microservices system implemented as an
-**Nx + npm workspaces** monorepo. It contains multiple Express services,
-a React + Vite frontend, and a shared TypeScript library used across all
-services.
+An **event-driven blog** built as an **Nx + npm workspaces** monorepo.
 
----
-
-## 🧱 Tech Stack
-
-- Node.js / TypeScript
-- Express for backend services
-- React + Vite for the frontend (`apps/client`)
-- Nx for running tasks across the monorepo
-- npm workspaces for dependency & package management
-- ESLint + Prettier for code style and linting
-- Husky + commitlint for git hooks and commit message checks
+- **Frontend:** React + Vite (`apps/client`)
+- **Backend:** TypeScript + Express microservices (`apps/*`)
+- **Communication:** Event Bus (fan-out)
+- **Shared code:** `@org/shared`
+- **Tooling:** Nx, ESLint, Prettier, Husky, commitlint
+- **Containers:** Docker, Skaffold, Kubernetes, Nginx
 
 ---
 
-## 📁 Monorepo Structure
+## Architecture overview
 
-The repository uses `apps/*` for runnable applications and `packages/*`
-for shared libraries.
+This project demonstrates a classic microservices architecture using an event-driven approach.
 
-    .
-    ├── apps/
-    │   ├── client/        # React + Vite frontend (@org/client)
-    │   ├── posts/         # Posts service (Express + TS) (@org/posts)
-    │   ├── comments/      # Comments service (Express + TS) (@org/comments)
-    │   ├── query/         # Query service for aggregated read model (@org/query)
-    │   ├── event-bus/     # Event Bus for cross-service communication (@org/event-bus)
-    │   └── moderation/    # Moderation service (@org/moderation)
-    │
-    ├── packages/
-    │   └── shared/        # Shared types, constants, and utils (@org/shared)
-    │       ├── src/constants/   # SERVICE_PORTS, ROUTES, SERVICE_URLS, etc.
-    │       ├── src/types/       # Post, Comment, EventItem, Query types…
-    │       └── src/utils/       # sendAnEvent, setTimeout helper, etc.
-    │
-    ├── nx.json             # Nx workspace config
-    ├── tsconfig.base.json  # Root TS config + path aliases
-    ├── package.json        # Root scripts and workspaces
-    └── .eslintrc.cjs       # Shared ESLint config
+**Services:**
+
+- `posts` – creates posts
+- `comments` – creates comments
+- `moderation` – validates comments
+- `query` – maintains an aggregated read model
+- `event-bus` – distributes events
+- `client` – React UI
+
+**Flow:**
+
+1. Post created → `PostCreated`
+2. Comment added → `CommentCreated`
+3. Moderation validates → `CommentModerated`
+4. Comment updated → `CommentUpdated`
+5. Query service builds read model for UI
 
 ---
 
-## ⚙️ Requirements
+## Repository structure
 
-The root `package.json` currently specifies:
-
-```json
-"engines": {
-  "node": "24.11.1",
-  "npm": "11.6.2"
-}
+```
+.
+├── apps/
+│   ├── client/
+│   ├── posts/
+│   ├── comments/
+│   ├── moderation/
+│   ├── query/
+│   └── event-bus/
+│
+├── packages/
+│   └── shared/
+│
+├── infra/
+│   └── k8s/
+│
+├── Dockerfile.base
+├── skaffold.yaml
+├── nx.json
+├── tsconfig.base.json
+└── package.json
 ```
 
-Use these versions or adjust according to your system.
+---
+
+## Tech stack
+
+- Node.js **24**
+- TypeScript
+- Express
+- React 18 + Vite
+- Nx 22 + npm workspaces
+- tsup
+- Docker, Kubernetes, Skaffold
+- Nginx (production client)
 
 ---
 
-## 🚀 Getting Started
+## Requirements
 
-### 1. Install dependencies
+```
+Node: 24.11.1
+npm: 11.6.2
+```
+
+---
+
+## Environment variables (IMPORTANT)
+
+This project relies on **explicit `.env.local` files** for local development.
+
+### Root `.env.local` (backend services)
+
+Create this file at the **repo root**:
 
 ```bash
-npm install
+.env.local
 ```
 
-Installs dependencies for all workspaces.
-
----
-
-## 🧩 Shared Library: @org/shared
-
-Imported as:
-
-```ts
-import { SERVICE_PORTS, SERVICE_URLS, sendAnEvent, type EventItem } from '@org/shared';
-```
-
-### Provides:
-
-#### Ports (env-overridable)
-
-    SERVICE_PORTS.posts       // 4000 → POSTS_PORT
-    SERVICE_PORTS.comments    // 4001 → COMMENTS_PORT
-    SERVICE_PORTS.query       // 4002 → QUERY_PORT
-    SERVICE_PORTS.moderation  // 4003 → MODERATION_PORT
-    SERVICE_PORTS.eventBus    // 4005 → EVENT_BUS_PORT
-
-#### Base URLs & routes
-
-    SERVICE_URLS.posts.list()
-    SERVICE_URLS.eventBus.create()
-
-#### Types
-
-- Post
-- Comment
-- EventItem
-
-#### Utils
-
-- sendAnEvent(event)
-
-> ℹ️ `@org/shared` is a **library**, not a runnable service.
-
----
-
-## 🧪 Root Scripts
-
-### Build
-
-```bash
-npm run build
-npm run build:affected
-```
-
-### Development
-
-```bash
-npm run dev:all
-```
-
-### Lint
-
-```bash
-npm run lint
-npm run lint:fix
-npm run lint:affected
-npm run lint:fix:affected
-```
-
-### Type Check
-
-```bash
-npm run type-check
-npm run type-check:affected
-```
-
-Husky hooks use `:affected` versions.
-
----
-
-## 🧷 Running Individual Apps
-
-### Using Nx
-
-```bash
-npx nx run client:dev
-npx nx run posts:dev
-npx nx run comments:dev
-npx nx run query:dev
-npx nx run event-bus:dev
-npx nx run moderation:dev
-```
-
-### Using npm workspaces
-
-```bash
-npm run dev --workspace @org/client
-npm run dev --workspace @org/posts
-npm run dev --workspace @org/comments
-npm run dev --workspace @org/query
-npm run dev --workspace @org/event-bus
-npm run dev --workspace @org/moderation
-```
-
----
-
-## 🌐 Ports & Environment Variables
-
-Default ports: - Posts: 4000 - Comments: 4001 - Query: 4002 -
-Moderation: 4003 - Event Bus: 4005
-
-Override for .env.local:
+Example:
 
 ```bash
 POSTS_URL=http://localhost:4000
@@ -192,7 +111,24 @@ MODERATION_PORT=4003
 EVENT_BUS_PORT=4005
 ```
 
-Override for /apps/client/.env.local:
+These values are consumed by `@org/shared` to:
+
+- build service-to-service URLs
+- configure Express listen ports
+
+> ℹ️ Ports are required for **local (non-k8s) development only**.
+
+---
+
+### Client `.env.local`
+
+Create this file at:
+
+```bash
+apps/client/.env.local
+```
+
+Example:
 
 ```bash
 VITE_POSTS_URL=http://localhost:4000
@@ -200,45 +136,93 @@ VITE_COMMENTS_URL=http://localhost:4001
 VITE_QUERY_URL=http://localhost:4002
 ```
 
+These variables are:
+
+- injected at **build time** by Vite
+- required for both `vite dev` and `vite preview`
+
 ---
 
-## 🧹 Linting, Type Checking & Formatting
+## Local development (no Kubernetes)
 
-Global configuration: - `.eslintrc.cjs` - `tsconfig.base.json`
+### Install dependencies
 
-Run manually:
-
-```bash
-npm run lint
-npm run type-check
+```
+npm ci
 ```
 
-Husky Hooks: - `pre-commit`: type-check + lint affected - `commit-msg`:
-commitlint
+### Run all services in dev mode
+
+```
+npm run dev
+```
+
+### Build and run (production-like)
+
+```
+npm run build
+npm run start
+```
 
 ---
 
-## 🗺️ Nx Workspace Tools
+## Nx usage
 
-Dependency graph:
-
-```bash
+```
 npx nx graph
-```
-
-List projects:
-
-```bash
-npx nx list --projects
+npx nx run posts:dev
+npx nx run client:dev
 ```
 
 ---
 
-## ✅ Summary
+## Kubernetes + Skaffold
 
-- Nx + npm workspaces monorepo
-- Multiple Express microservices
-- React + Vite frontend
-- `@org/shared` for cross-service types/constants/utils
-- Centralized build, dev, lint, and type-check commands
-- Husky + commitlint included for clean commits
+### Prerequisites
+
+- Docker Desktop / Minikube
+- kubectl
+- skaffold
+- NGINX Ingress Controller
+- `/etc/hosts` → `posts.com`
+
+### Build base image
+
+```
+docker build -f Dockerfile.base -t seniorigortyapkin/blog-base .
+```
+
+### Start dev loop
+
+```
+skaffold dev
+```
+
+### Access
+
+- UI: http://posts.com
+- APIs routed via Ingress
+
+---
+
+## Shared library (`@org/shared`)
+
+Exports:
+
+- Event types
+- Service URLs and ports
+- Helpers for sending events
+
+---
+
+## Notes
+
+- Client is served by Nginx in Kubernetes
+- Backend services listen on port 80 in cluster
+- NodePort service exists for debugging only
+
+---
+
+## License
+
+MIT
