@@ -20,22 +20,7 @@
     "lint:fix": "nx run-many --target=lint --all -- --fix",
     "lint:fix:affected": "nx affected --target=lint -- --fix",
     "type-check": "nx run-many --target=type-check --all",
-    "type-check:affected": "nx affected --target=type-check",
-    "docker:build": "npm run docker:build:base && docker compose build",
-    "docker:up": "docker compose up",
-    "docker:build:base": "docker compose build base",
-    "docker:build:query": "npm run docker:build:base && docker compose build query",
-    "docker:up:query": "docker compose up query",
-    "docker:build:posts": "npm run docker:build:base && docker compose build posts",
-    "docker:up:posts": "docker compose up posts",
-    "docker:build:moderation": "npm run docker:build:base && docker compose build moderation",
-    "docker:up:moderation": "docker compose up moderation",
-    "docker:build:event-bus": "npm run docker:build:base && docker compose build event-bus",
-    "docker:up:event-bus": "docker compose up event-bus",
-    "docker:build:comments": "npm run docker:build:base && docker compose build comments",
-    "docker:up:comments": "docker compose up comments",
-    "docker:build:client": "npm run docker:build:base && docker compose build client",
-    "docker:up:client": "docker compose up client"
+    "type-check:affected": "nx affected --target=type-check"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
