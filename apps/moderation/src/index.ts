@@ -9,7 +9,7 @@ import { validateComment } from './utils';
 const app = express();
 app.use(express.json());
 
-app.post('/events', (req: Request<object, object, EventItem>, res: Response) => {
+app.post('/api/events', (req: Request<object, object, EventItem>, res: Response) => {
   const { type, data } = req.body;
 
   if (type === 'CommentCreated') {

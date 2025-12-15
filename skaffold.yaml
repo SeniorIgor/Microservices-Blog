@@ -1,0 +1,41 @@
+apiVersion: skaffold/v4beta3
+kind: Config
+
+manifests:
+  rawYaml:
+    - infra/k8s/*
+
+build:
+  local:
+    push: false
+
+  artifacts:
+    - image: seniorigortyapkin/client
+      context: .
+      docker:
+        dockerfile: apps/client/Dockerfile
+
+    - image: seniorigortyapkin/comments
+      context: .
+      docker:
+        dockerfile: apps/comments/Dockerfile
+
+    - image: seniorigortyapkin/event-bus
+      context: .
+      docker:
+        dockerfile: apps/event-bus/Dockerfile
+
+    - image: seniorigortyapkin/moderation
+      context: .
+      docker:
+        dockerfile: apps/moderation/Dockerfile
+
+    - image: seniorigortyapkin/posts
+      context: .
+      docker:
+        dockerfile: apps/posts/Dockerfile
+
+    - image: seniorigortyapkin/query
+      context: .
+      docker:
+        dockerfile: apps/query/Dockerfile

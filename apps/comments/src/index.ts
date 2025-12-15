@@ -12,14 +12,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/posts/:postId/comments', (req: Request<GetCommentsParams>, res: Response) => {
+app.get('/api/comments/:postId', (req: Request<GetCommentsParams>, res: Response) => {
   const comments = getCommentsByPostId(req.params.postId);
 
   res.send(comments);
 });
 
 app.post(
-  '/posts/:postId/comments',
+  '/api/comments/:postId',
   async (req: Request<CreateCommentsParams, unknown, CreateCommentsRequest>, res: Response) => {
     const { postId } = req.params;
     const comment = createNewComment(req.body, postId);
@@ -38,7 +38,7 @@ app.post(
   },
 );
 
-app.post('/events', async (req: Request<object, object, EventItem>, res: Response) => {
+app.post('/api/events', async (req: Request<object, object, EventItem>, res: Response) => {
   const { type, data } = req.body;
 
   if (type === 'CommentModerated') {

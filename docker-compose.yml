@@ -3,13 +3,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.base
-    image: blog-base
+    image: seniorigortyapkin/blog-base
 
   client:
     container_name: client
     build:
       context: .
       dockerfile: apps/client/Dockerfile
+    image: seniorigortyapkin/client
     depends_on:
       - base
     ports:
@@ -25,10 +26,11 @@ services:
     build:
       context: .
       dockerfile: apps/posts/Dockerfile
+    image: seniorigortyapkin/posts
     depends_on:
       - base
     ports:
-      - "4000:4000"
+      - "80:80"
     env_file:
       - docker.env
     networks:
@@ -40,10 +42,11 @@ services:
     build:
       context: .
       dockerfile: apps/comments/Dockerfile
+    image: seniorigortyapkin/comments
     depends_on:
       - base
     ports:
-      - "4001:4001"
+      - "80:80"
     env_file:
       - docker.env
     networks:
@@ -55,10 +58,11 @@ services:
     build:
       context: .
       dockerfile: apps/query/Dockerfile
+    image: seniorigortyapkin/query
     depends_on:
       - base
     ports:
-      - "4002:4002"
+      - "80:80"
     env_file:
       - docker.env
     networks:
@@ -70,10 +74,11 @@ services:
     build:
       context: .
       dockerfile: apps/moderation/Dockerfile
+    image: seniorigortyapkin/moderation
     depends_on:
       - base
     ports:
-      - "4003:4003"
+      - "80:80"
     env_file:
       - docker.env
     networks:
@@ -85,10 +90,11 @@ services:
     build:
       context: .
       dockerfile: apps/event-bus/Dockerfile
+    image: seniorigortyapkin/event-bus
     depends_on:
       - base
     ports:
-      - "4005:4005"
+      - "80:80"
     env_file:
       - docker.env
     networks:

@@ -10,7 +10,7 @@ import { addNewEvent, getAllEvents } from './store';
 const app = express();
 app.use(express.json());
 
-app.post('/events', async (req: Request<unknown, unknown, EventItem>, res: Response) => {
+app.post('/api/events', async (req: Request<unknown, unknown, EventItem>, res: Response) => {
   const event = req.body;
 
   addNewEvent(event);
@@ -33,7 +33,7 @@ app.post('/events', async (req: Request<unknown, unknown, EventItem>, res: Respo
   res.send({ status: 'OK' });
 });
 
-app.get('/events', (_req: Request, res: Response) => {
+app.get('/api/events', (_req: Request, res: Response) => {
   res.send(getAllEvents());
 });
 

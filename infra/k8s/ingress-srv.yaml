@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: posts.com
+      http:
+        paths:
+          - path: /api/posts
+            pathType: Prefix
+            backend:
+              service:
+                name: posts-cluster-srv
+                port:
+                  number: 80
+
+          - path: /api/comments
+            pathType: Prefix
+            backend:
+              service:
+                name: comments-srv
+                port:
+                  number: 80
+
+          - path: /api/query
+            pathType: Prefix
+            backend:
+              service:
+                name: query-srv
+                port:
+                  number: 80
+
+          # All other paths go to frontend
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 80

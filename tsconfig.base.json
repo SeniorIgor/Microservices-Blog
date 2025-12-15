@@ -12,7 +12,6 @@
     "baseUrl": ".",
     "paths": {
       "@org/shared": ["packages/shared/src/index.ts"],
-      "@org/shared/*": ["packages/shared/src/*"]
     }
   }
 }

@@ -2,12 +2,11 @@ FROM node:24-alpine AS builder
 
 WORKDIR /app
 
-# Copy root workspace files
-COPY package*.json ./
+# Root workspace files (dependency graph)
+COPY package.json package-lock.json ./
 COPY nx.json tsconfig.base.json ./
-COPY tsup.config.ts ./
 
-# Copy only the package.json for each package
+# Per-project package.json files (Nx workspace deps)
 COPY packages/shared/package.json packages/shared/
 COPY apps/client/package.json apps/client/
 COPY apps/posts/package.json apps/posts/
@@ -16,9 +15,5 @@ COPY apps/query/package.json apps/query/
 COPY apps/moderation/package.json apps/moderation/
 COPY apps/event-bus/package.json apps/event-bus/
 
+# Install deps once
 RUN npm ci
-
-# Copy everything
-COPY . .
-
-RUN npm run build

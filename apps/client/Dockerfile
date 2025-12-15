@@ -1,18 +1,19 @@
 # -------- Builder stage --------
-FROM blog-base AS builder
-
-# -------- Runtime stage --------
-FROM node:24-alpine
+FROM seniorigortyapkin/blog-base AS builder
 
 WORKDIR /app
+COPY . .
 
-# Copy built code for client
-COPY --from=builder /app/apps/client/dist ./dist
+RUN npx nx build client
 
-# Copy the service's own package.json so `npm start` exists
-COPY --from=builder /app/apps/client/package.json ./package.json
+# -------- Runtime stage --------
+FROM nginx:stable-alpine
 
-# Copy node_modules from builder (contains all workspace deps incl. @org/shared)
-COPY --from=builder /app/node_modules ./node_modules
+# Copy built static files to NGINX HTML directory
+COPY --from=builder /app/apps/client/dist /usr/share/nginx/html
 
-CMD ["npm", "start"]
+# Expose port 80 for Kubernetes Service
+EXPOSE 80
+
+# Start NGINX
+CMD ["nginx", "-g", "daemon off;"]

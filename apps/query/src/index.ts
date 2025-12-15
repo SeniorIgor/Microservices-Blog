@@ -12,11 +12,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/posts', (_req: Request, res: Response) => {
+app.get('/api/query/posts', (_req: Request, res: Response) => {
   res.send(getPosts());
 });
 
-app.post('/events', (req: Request<unknown, unknown, EventItem>, res: Response) => {
+app.post('/api/events', (req: Request<unknown, unknown, EventItem>, res: Response) => {
   handleEvent(req.body);
 
   res.send({});

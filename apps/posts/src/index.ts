@@ -14,11 +14,11 @@ app.use(cors());
 
 const posts: Record<string, Post> = {};
 
-app.get('/posts', (_req: Request, res: Response) => {
+app.get('/api/posts', (_req: Request, res: Response) => {
   res.send(posts);
 });
 
-app.post('/posts', async (req: Request<object, object, CreatePostRequest>, res: Response) => {
+app.post('/api/posts', async (req: Request<object, object, CreatePostRequest>, res: Response) => {
   const { title } = req.body;
 
   if (!title) {
@@ -43,7 +43,7 @@ app.post('/posts', async (req: Request<object, object, CreatePostRequest>, res: 
   res.status(201).send(posts[id]);
 });
 
-app.post('/events', (req: Request<object, object, EventItem>, res: Response) => {
+app.post('/api/events', (req: Request<object, object, EventItem>, res: Response) => {
   console.log('Posts Service Received Event', req.body.type);
 
   res.send({});

@@ -1,35 +1,35 @@
 export const SERVICE_URLS = {
-  posts: import.meta.env.VITE_POSTS_URL ?? 'http://localhost:4000',
-  comments: import.meta.env.VITE_COMMENTS_URL ?? 'http://localhost:4001',
-  query: import.meta.env.VITE_QUERY_URL ?? 'http://localhost:4002',
+  posts: import.meta.env.VITE_POSTS_URL || '',
+  comments: import.meta.env.VITE_COMMENTS_URL || '',
+  query: import.meta.env.VITE_QUERY_URL || '',
 } as const;
 
-export const ROUTES = {
+export const API_ROUTES = {
   posts: {
-    list: '/posts',
-    create: '/posts',
+    list: '/api/posts',
+    create: '/api/posts',
   },
   comments: {
-    list: (postId: string) => `/posts/${postId}/comments`,
-    create: (postId: string) => `/posts/${postId}/comments`,
+    list: (postId: string) => `/api/comments/${postId}`,
+    create: (postId: string) => `/api/comments/${postId}`,
   },
   query: {
-    listPosts: '/posts',
+    listPosts: '/api/query/posts',
   },
 } as const;
 
 export const API = {
   posts: {
-    list: () => `${SERVICE_URLS.posts}${ROUTES.posts.list}`,
-    create: () => `${SERVICE_URLS.posts}${ROUTES.posts.create}`,
+    list: () => `${SERVICE_URLS.posts}${API_ROUTES.posts.list}`,
+    create: () => `${SERVICE_URLS.posts}${API_ROUTES.posts.create}`,
   },
 
   comments: {
-    list: (postId: string) => `${SERVICE_URLS.comments}${ROUTES.comments.list(postId)}`,
-    create: (postId: string) => `${SERVICE_URLS.comments}${ROUTES.comments.create(postId)}`,
+    list: (postId: string) => `${SERVICE_URLS.comments}${API_ROUTES.comments.list(postId)}`,
+    create: (postId: string) => `${SERVICE_URLS.comments}${API_ROUTES.comments.create(postId)}`,
   },
 
   query: {
-    listPosts: () => `${SERVICE_URLS.query}${ROUTES.query.listPosts}`,
+    listPosts: () => `${SERVICE_URLS.query}${API_ROUTES.query.listPosts}`,
   },
 } as const;

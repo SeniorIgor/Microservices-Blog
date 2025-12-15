@@ -15,9 +15,13 @@ const requireEnv = (key: string): string => {
 // PORT HELPER (fixed!)
 const getPort = (envName: string, fallback: number): number => {
   const raw = process.env[envName];
-  if (!raw) return fallback;
+
+  if (!raw) {
+    return fallback;
+  }
 
   const num = Number(raw);
+
   return Number.isNaN(num) ? fallback : num;
 };
 
@@ -42,22 +46,22 @@ export const SERVICE_BASE_URLS: Record<ServiceName, string> = {
 // ROUTES
 export const ROUTES = {
   posts: {
-    list: '/posts',
-    events: '/events',
+    list: '/api/posts',
+    events: '/api/events',
   },
   comments: {
-    list: (postId: string) => `/posts/${postId}/comments`,
-    events: '/events',
+    list: (postId: string) => `/api/comments/${postId}`,
+    events: '/api/events',
   },
   query: {
-    listPosts: '/posts',
-    events: '/events',
+    listPosts: '/api/query/posts',
+    events: '/api/events',
   },
   moderation: {
-    events: '/events',
+    events: '/api/events',
   },
   eventBus: {
-    events: '/events',
+    events: '/api/events',
   },
 } as const;
 

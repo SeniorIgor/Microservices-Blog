@@ -176,14 +176,28 @@ npm run dev --workspace @org/moderation
 Default ports: - Posts: 4000 - Comments: 4001 - Query: 4002 -
 Moderation: 4003 - Event Bus: 4005
 
-Override:
+Override for .env.local:
 
 ```bash
-POSTS_PORT=5000
-COMMENTS_PORT=5001
-QUERY_PORT=5002
-MODERATION_PORT=5003
-EVENT_BUS_PORT=5005
+POSTS_URL=http://localhost:4000
+COMMENTS_URL=http://localhost:4001
+QUERY_URL=http://localhost:4002
+MODERATION_URL=http://localhost:4003
+EVENT_BUS_URL=http://localhost:4005
+
+POSTS_PORT=4000
+COMMENTS_PORT=4001
+QUERY_PORT=4002
+MODERATION_PORT=4003
+EVENT_BUS_PORT=4005
+```
+
+Override for /apps/client/.env.local:
+
+```bash
+VITE_POSTS_URL=http://localhost:4000
+VITE_COMMENTS_URL=http://localhost:4001
+VITE_QUERY_URL=http://localhost:4002
 ```
 
 ---
